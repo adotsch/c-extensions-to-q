@@ -3,7 +3,7 @@
 //
 // q) i128:(`int128 2:(`api;1))`
 // q) i128.str i128.mul[i128.parse "42";i128.cast 0Wj]
-// q) i128.str (i128.mul/) i128.cast'[1+til 33]
+// q) i128.str (i128.mul/) i128.cast 1+til 33
 // q) i128.str i128.parse 38#"9"
 // q) i128.str i128.parse "-",38#"9"
 //
@@ -25,6 +25,7 @@ extern"C"{
 
 K1(parse)
 {
+	if(!xt)R krr("nyi");
 	if(xt-KC)R krr("type");
 	__int128 v =0;I s=1,i=0;
 	if(xn)
@@ -49,6 +50,7 @@ K1(cast)
 	__int128 v;
 	switch(xt)
 	{
+		//atom
 		case -KB:
 		case -KC:
 		case -KG: v=x->g; break;
@@ -65,6 +67,7 @@ K1(cast)
 		
 		case -UU: R r1(x); break;
 		
+		//vector
 		case KB:
 		case KC:
 		case KG:{K r=ktn(UU,xn);for(J i=0;i<xn;i++)kU_(r)[i]=kG(x)[i];R r;}break;
@@ -80,6 +83,9 @@ K1(cast)
 		case KF:{K r=ktn(UU,xn);for(J i=0;i<xn;i++)kU_(r)[i]=kF(x)[i];R r;}break;
 		
 		case UU: R r1(x); break;
+		
+		//list
+		case 0: R krr("nyi");
 		
 		default:R krr("type");
 	}
@@ -98,6 +104,7 @@ K2(lt)  {if((xt+UU)||(yt+UU))R krr("type");R kb(kU0(x)<kU0(y));}
 
 K1(str)
 {
+	if(xt==UU)R krr("nyi");
 	if(xt+UU)R krr("type");
 	C d[100],s='0';I i=0,j=0;__int128 v=kU0(x);
 	if(v<0){s='-';v=-v;j++;};while(v>0){d[i++]='0'+v%10;v=v/10;};
