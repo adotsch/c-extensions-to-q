@@ -67,6 +67,8 @@ K2(sub) {if((xt+UU)||(yt+UU))R krr("type");R ku_(kU_(x)-kU_(y));}
 K2(mul) {if((xt+UU)||(yt+UU))R krr("type");R ku_(kU_(x)*kU_(y));}
 K2(div) {if((xt+UU)||(yt+UU))R krr("type");R ku_(kU_(x)/kU_(y));}
 K2(mod) {if((xt+UU)||(yt+UU))R krr("type");R ku_(kU_(x)%kU_(y));}
+K2(eq)  {if((xt+UU)||(yt+UU))R krr("type");R kb(kU_(x)==kU_(y));}
+K2(lt)  {if((xt+UU)||(yt+UU))R krr("type");R kb(kU_(x)<kU_(y));}
 
 K1(str)
 {
@@ -84,7 +86,7 @@ K1(str)
 
 K1(api)
 {
-	K n = ktn(KS,9);
+	K n = ktn(KS,11);
 	kS(n)[0]=ss("cast");
 	kS(n)[1]=ss("low");
 	kS(n)[2]=ss("high");
@@ -93,8 +95,10 @@ K1(api)
 	kS(n)[5]=ss("mul");
 	kS(n)[6]=ss("div");
 	kS(n)[7]=ss("mod");
-	kS(n)[8]=ss("str");
-	R xD(n,knk(9,
+	kS(n)[8]=ss("eq");
+	kS(n)[9]=ss("lt");
+	kS(n)[10]=ss("str");
+	R xD(n,knk(11,
 		dl(cast,1),
 		dl(low,1),
 		dl(high,1),
@@ -103,6 +107,8 @@ K1(api)
 		dl(mul,2),
 		dl(div,2),
 		dl(mod,2),
+		dl(eq,2),
+		dl(lt,2),
 		dl(str,1)
 	));
 }
