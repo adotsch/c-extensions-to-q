@@ -3,6 +3,7 @@
 //
 // q) i128:(`int128 2:(`api;1))`
 // q) i128.str i128.mul[i128.cast "42";i128.cast 0Wj]
+// q) i128.str (i128.mul/) i128.cast'[1+til 33]
 //
 // compile with
 // gcc -shared -m64 -DKXVER=3 -O2 int128.c -o int128.so -fPIC
@@ -73,14 +74,9 @@ K2(lt)  {if((xt+UU)||(yt+UU))R krr("type");R kb(kU_(x)<kU_(y));}
 K1(str)
 {
 	if(xt+UU)R krr("type");
-	C d[100],s='+';I i=0,j=0;
-	__int128 v = kU_(x);
-	if(v<0){s='-';v=-v;};
-	while(v>0){d[i++]=(C)(((I)'0')+v%10);v=v/10;};
-	K r=ktn(KC,(s=='-')+(i?i:1));
-	kC(r)[0]='0';
-	if(s=='-')kC(r)[j++]='-';
-	while(i)kC(r)[j++]=d[--i];
+	C d[100],s='0';I i=0,j=0;__int128 v=kU_(x);
+	if(v<0){s='-';v=-v;j++;};while(v>0){d[i++]='0'+v%10;v=v/10;};
+	K r=ktn(KC,(s=='-')+(i?i:1));kC(r)[0]=s;while(i)kC(r)[j++]=d[--i];
 	R r;
 }
 
