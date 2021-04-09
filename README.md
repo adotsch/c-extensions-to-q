@@ -4,8 +4,10 @@ This is a C extension to KDB+/Q making GCC's ___int128_ type available in Q as a
 
 ## Build and Load
 
-Build with _make_, load with _\l i128.q_.
-
+Build with _make_, load with
+```
+q) \l i128.q
+```
 ## Converting to/from
 ```
 q) i128.parse "12345678910111213141516"
