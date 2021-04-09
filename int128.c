@@ -45,6 +45,21 @@ K1(parse)
 		R krr("format");
 }
 
+K case0(K x,K(*f)(K))
+{
+	K r=ktn(0,0);
+	for(J i=0;i<xn;i++)
+	{
+		K ri = f(kK(x)[i]);
+		if(ri->t==-128)
+		{
+			r0(r);r=ri;break;
+		}
+		jk(&r,ri);
+	}
+	R r;
+}
+
 K1(cast)
 {
 	__int128 v;
@@ -85,36 +100,72 @@ K1(cast)
 		case UU: R r1(x); break;
 		
 		//list
-		case 0: R krr("nyi");
+		case 0: R case0(x,cast); break;
 		
 		default:R krr("type");
 	}
 	R ku_(v);
 }
 
-K1(low) {if(xt+UU)R krr("type");R kj(kJ(x)[0]);}
-K1(high){if(xt+UU)R krr("type");R kj(kJ(x)[1]);}
-K2(add) {if((xt+UU)||(yt+UU))R krr("type");R ku_(kU0(x)+kU0(y));}
-K2(sub) {if((xt+UU)||(yt+UU))R krr("type");R ku_(kU0(x)-kU0(y));}
-K2(mul) {if((xt+UU)||(yt+UU))R krr("type");R ku_(kU0(x)*kU0(y));}
-K2(div) {if((xt+UU)||(yt+UU))R krr("type");R ku_(kU0(x)/kU0(y));}
-K2(mod) {if((xt+UU)||(yt+UU))R krr("type");R ku_(kU0(x)%kU0(y));}
-K2(eq)  {if((xt+UU)||(yt+UU))R krr("type");R kb(kU0(x)==kU0(y));}
-K2(lt)  {if((xt+UU)||(yt+UU))R krr("type");R kb(kU0(x)<kU0(y));}
-
-K1(str)
+K1(low) 
 {
-	if(xt==UU)R krr("nyi");
-	if(xt+UU)R krr("type");
-	C d[100],s='0';I i=0,j=0;__int128 v=kU0(x);
+	switch(xt)
+	{
+		case -UU: R kj(kJ(x)[0]);
+		case  UU:{ K r = ktn(KJ,xn); for(J i=0;i<xn;i++)kJ(r)[i]=kJ(x)[2*i]; R r;}
+		case   0: R case0(x,low);
+		default : R krr("type");
+	}
+}
+K1(high) 
+{
+	switch(xt)
+	{
+		case -UU: R kj(kJ(x)[1]);
+		case  UU:{ K r = ktn(KJ,xn); for(J i=0;i<xn;i++)kJ(r)[i]=kJ(x)[2*i]; R r;}
+		case   0: R case0(x,high);
+		default : R krr("type");
+	}
+}
+
+#define OP(fn,ctor,op) K2(fn) {if((xt+UU)||(yt+UU))R krr("type");R ctor(kU0(x) op kU0(y));}
+OP(add,ku_,+)
+OP(sub,ku_,-)
+OP(mul,ku_,*)
+OP(div,ku_,/)
+OP(mod,ku_,%)
+OP(lt ,kb ,<)
+
+K str0(__int128 v)
+{
+	C d[100],s='0';I i=0,j=0;
 	if(v<0){s='-';v=-v;j++;};while(v>0){d[i++]='0'+v%10;v=v/10;};
 	K r=ktn(KC,(s=='-')+(i?i:1));kC(r)[0]=s;while(i)kC(r)[j++]=d[--i];
 	R r;
 }
 
+K1(str)
+{
+	K r;
+	switch(xt)
+	{		
+		case -UU: r=str0(kU0(x)); break;
+		case  UU:
+		{
+			r=ktn(0,0);
+			for(J i=0;i<xn;i++)
+				jk(&r,str0(kU_(x)[i]));
+		}
+		break;
+		case 0: r=case0(x,str); break;
+		default:r=krr("type");
+	}
+	R r;
+}
+
 K1(api)
 {
-	K n = ktn(KS,12);
+	K n = ktn(KS,11);
 	kS(n)[ 0]=ss("cast");
 	kS(n)[ 1]=ss("parse");
 	kS(n)[ 2]=ss("low");
@@ -124,10 +175,9 @@ K1(api)
 	kS(n)[ 6]=ss("mul");
 	kS(n)[ 7]=ss("div");
 	kS(n)[ 8]=ss("mod");
-	kS(n)[ 9]=ss("eq");
-	kS(n)[10]=ss("lt");
-	kS(n)[11]=ss("str");
-	R xD(n,knk(12,
+	kS(n)[ 9]=ss("lt");
+	kS(n)[10]=ss("str");
+	R xD(n,knk(11,
 		dl(cast,1),
 		dl(parse,1),
 		dl(low,1),
@@ -137,7 +187,6 @@ K1(api)
 		dl(mul,2),
 		dl(div,2),
 		dl(mod,2),
-		dl(eq,2),
 		dl(lt,2),
 		dl(str,1)
 	));
