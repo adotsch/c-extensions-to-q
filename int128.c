@@ -113,7 +113,7 @@ K1(low)
     switch(xt)
     {
         case -UU: R kj(kJ(x)[0]);
-        case  UU:{ K r = ktn(KJ,xn); for(J i=0;i<xn;i++)kJ(r)[i]=kJ(x)[2*i]; R r;}
+        case  UU:{K r = ktn(KJ,xn);for(J i=0;i<xn;i++)kJ(r)[i]=kJ(x)[2*i];R r;}
         case   0: R case0(x,low);
         default : R krr("type");
     }
@@ -123,7 +123,7 @@ K1(high)
     switch(xt)
     {
         case -UU: R kj(kJ(x)[1]);
-        case  UU:{ K r = ktn(KJ,xn); for(J i=0;i<xn;i++)kJ(r)[i]=kJ(x)[2*i]; R r;}
+        case  UU:{K r = ktn(KJ,xn);for(J i=0;i<xn;i++)kJ(r)[i]=kJ(x)[2*i];R r;}
         case   0: R case0(x,high);
         default : R krr("type");
     }
@@ -135,10 +135,7 @@ K case0x(K x,K y,K(*op)(K,K))
     for(J i=0;i<xn;i++)
     {
         K ri = op(kK(x)[i],y);
-        if(ri->t==-128)
-        {
-            r0(r);r=ri;break;
-        }
+        if(ri->t==-128){r0(r);r=ri;break;}
         jk(&r,ri);
     }
     R r;
@@ -149,10 +146,7 @@ K case0y(K x,K y,K(*op)(K,K))
     for(J i=0;i<yn;i++)
     {
         K ri = op(x,kK(y)[i]);
-        if(ri->t==-128)
-        {
-            r0(r);r=ri;break;
-        }
+        if(ri->t==-128){r0(r);r=ri;break;}
         jk(&r,ri);
     }
     R r;
@@ -165,20 +159,9 @@ K case0xy(K x,K y,K(*op)(K,K))
     for(J i=0;i<xn;i++)
     {
         K ri;
-        if(xt)
-        {
-            kU0(ui)=kU_(x)[i];
-            ri = op(ui,kK(y)[i]);
-        }
-        else if(yt)
-        {
-            kU0(ui)=kU_(y)[i];
-            ri = op(kK(x)[i],ui);
-        }
-        else
-        {
-            ri = op(kK(x)[i],kK(y)[i]);
-        }
+        if(xt)      {kU0(ui)=kU_(x)[i];ri=op(ui,kK(y)[i]);}
+        else if(yt) {kU0(ui)=kU_(y)[i];ri=op(kK(x)[i],ui);}
+        else        {                  ri=op(kK(x)[i],kK(y)[i]);}
         if(ri->t==-128){r0(r);r=ri;break;}
         jk(&r,ri);
     }
@@ -186,44 +169,41 @@ K case0xy(K x,K y,K(*op)(K,K))
     R r;
 }
 
-#define OP(fn,ctor,op,T,A)                                                                          \
-K2(fn)                                                                                              \
-{                                                                                                   \
-    switch(xt)                                                                                      \
-    {                                                                                               \
-        case -UU:                                                                                   \
-        {                                                                                           \
-            switch(yt)                                                                              \
-            {                                                                                       \
-                case -UU: R ctor(kU0(x) op kU0(y));                                                 \
-                case  UU:{K r=ktn(T,yn);for(J i=0;i<yn;i++) A(r)[i] = kU0(x) op kU_(y)[i];R r;}     \
-                case   0: R case0y(x,y,fn);                                                         \
-                default : break;                                                                    \
-            }                                                                                       \
-        }                                                                                           \
-        case  UU:                                                                                   \
-        {                                                                                           \
-            switch(yt)                                                                              \
-            {                                                                                       \
-                case -UU:{K r=ktn(T,xn);for(J i=0;i<xn;i++) A(r)[i] = kU_(x)[i] op kU0(y);R r;}     \
-                case  UU:{if(xn-yn) R krr("lenght");                                                \
-                          K r=ktn(T,xn);for(J i=0;i<xn;i++) A(r)[i] = kU_(x)[i] op kU_(y)[i];R r;}  \
-                case   0: case0xy(x,y,fn);                                                          \
-                default : R krr("type");                                                            \
-            }                                                                                       \
-        }                                                                                           \
-        case   0:                                                                                   \
-        {                                                                                           \
-            switch(yt)                                                                              \
-            {                                                                                       \
-                case -UU: R case0x(x,y,fn);                                                         \
-                case  UU:                                                                           \
-                case   0: R case0xy(x,y,fn);                                                        \
-                default : R krr("type");                                                            \
-            }                                                                                       \
-        }                                                                                           \
-        default : R krr("type");                                                                    \
-    }                                                                                               \
+#define OP(fn,ctor,op,T,A)                                                                       \
+K2(fn)                                                                                           \
+{                                                                                                \
+    switch(xt)                                                                                   \
+    {                                                                                            \
+        case -UU:                                                                                \
+        {                                                                                        \
+            switch(yt)                                                                           \
+            {                                                                                    \
+                case -UU: R ctor(kU0(x) op kU0(y));                                              \
+                case  UU:{K r=ktn(T,yn);for(J i=0;i<yn;i++) A(r)[i]=kU0(x) op kU_(y)[i];R r;}    \
+                case   0: R case0y(x,y,fn);                                                      \
+            }                                                                                    \
+        }                                                                                        \
+        case  UU:                                                                                \
+        {                                                                                        \
+            switch(yt)                                                                           \
+            {                                                                                    \
+                case -UU:{K r=ktn(T,xn);for(J i=0;i<xn;i++) A(r)[i]=kU_(x)[i] op kU0(y);R r;}    \
+                case  UU:{if(xn-yn) R krr("lenght");                                             \
+                          K r=ktn(T,xn);for(J i=0;i<xn;i++) A(r)[i]=kU_(x)[i] op kU_(y)[i];R r;} \
+                case   0: R case0xy(x,y,fn);                                                     \
+            }                                                                                    \
+        }                                                                                        \
+        case   0:                                                                                \
+        {                                                                                        \
+            switch(yt)                                                                           \
+            {                                                                                    \
+                case -UU: R case0x(x,y,fn);                                                      \
+                case  UU:                                                                        \
+                case   0: R case0xy(x,y,fn);                                                     \
+            }                                                                                    \
+        }                                                                                        \
+    }                                                                                            \
+    R krr("type");                                                                               \
 }
 
 OP(add,ku_,+,UU,kU_)
@@ -246,16 +226,10 @@ K1(str)
     K r;
     switch(xt)
     {       
-        case -UU: r=strv(kU0(x)); break;
-        case  UU:
-        {
-            r=ktn(0,0);
-            for(J i=0;i<xn;i++)
-                jk(&r,strv(kU_(x)[i]));
-        }
-        break;
-        case 0: r=case0(x,str); break;
-        default:r=krr("type");
+        case -UU: r=strv(kU0(x));break;
+        case  UU:{r=ktn(0,0);for(J i=0;i<xn;i++)jk(&r,strv(kU_(x)[i]));};break;
+        case   0: r=case0(x,str);break;
+        default:  r=krr("type");
     }
     R r;
 }
