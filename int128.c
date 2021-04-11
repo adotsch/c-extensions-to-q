@@ -123,7 +123,7 @@ K1(high)
     switch(xt)
     {
         case -UU: R kj(kJ(x)[1]);
-        case  UU:{K r = ktn(KJ,xn);for(J i=0;i<xn;i++)kJ(r)[i]=kJ(x)[2*i];R r;}
+        case  UU:{K r = ktn(KJ,xn);for(J i=0;i<xn;i++)kJ(r)[i]=kJ(x)[2*i+1];R r;}
         case   0: R case0(x,high);
         default : R krr("type");
     }
