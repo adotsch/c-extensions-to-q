@@ -24,7 +24,7 @@ all : int128.so
 CC=gcc
 OPTS=-D KXVER=3 -Wall -fno-strict-aliasing -Wno-parentheses -g -O2
 #LDOPTS=-lpthread
-OBJ=$(OBJHOME)/c.o
+#OBJ=$(OBJHOME)/c.o
 
 %.so: %.c
 	$(CC) $(CFLAG) $(OPTS) -shared -fPIC -o $@ $< $(OBJ) $(LDOPTS)
