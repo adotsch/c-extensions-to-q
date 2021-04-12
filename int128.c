@@ -188,7 +188,7 @@ K2(fn)                                                                          
             switch(yt)                                                                           \
             {                                                                                    \
                 case -UU:{K r=ktn(T,xn);for(J i=0;i<xn;i++) A(r)[i]=kU_(x)[i] op kU0(y);R r;}    \
-                case  UU:{if(xn-yn) R krr("lenght");                                             \
+                case  UU:{if(xn-yn) R krr("length");                                             \
                           K r=ktn(T,xn);for(J i=0;i<xn;i++) A(r)[i]=kU_(x)[i] op kU_(y)[i];R r;} \
                 case   0: R case0xy(x,y,fn);                                                     \
             }                                                                                    \

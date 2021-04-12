@@ -1,4 +1,4 @@
-# Simple 128bit integer library for Q
+# int128.c: Simple 128bit integer library for Q
 
 This is a C extension to KDB+/Q making GCC's ___int128_ type available in Q as a guid.
 
@@ -42,3 +42,7 @@ q) i128.lt[rand 0Ng;5 10#50?0Ng]
 0000010110b
 1011011110b
 ```
+
+## Thanks
+
+Thanks for Charles Skelton for code review and suggestions. :)
