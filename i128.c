@@ -216,7 +216,7 @@ OP(lt ,kb ,<,KB,kG)
 K strv(__int128 v)
 {
     C d[100],s='0';I i=0,j=0;
-    if(v<0){s='-';v=-v;j++;};while(v>0){d[i++]='0'+v%10;v=v/10;};
+    if(v<0){s='-';v=-v;j++;};while(v>0){d[i++]='0'+({I x=v%10;(x<0)?(-x):x;});v=v/10;};
     K r=ktn(KC,(s=='-')+(i?i:1));kC(r)[0]=s;while(i)kC(r)[j++]=d[--i];
     R r;
 }

@@ -12,14 +12,14 @@ else
 endif
 
 # Set location of c.o object file to use 
-LBITS := $(shell getconf LONG_BIT)
-ifeq ($(LBITS),64)
-   OBJHOME=l64
-else
-   OBJHOME=l32
-endif
+#LBITS := $(shell getconf LONG_BIT)
+#ifeq ($(LBITS),64)
+#   OBJHOME=l64
+#else
+#   OBJHOME=l32
+#endif
 
-all : int128.so
+all : i128.so
 
 CC=gcc
 OPTS=-D KXVER=3 -Wall -fno-strict-aliasing -Wno-parentheses -g -O2
@@ -33,4 +33,4 @@ OPTS=-D KXVER=3 -Wall -fno-strict-aliasing -Wno-parentheses -g -O2
 	$(CC) $(FLAGS) $(OPTS) -S -fverbose-asm -o $@  $< 
 
 clean:
-	rm int128.so
+	rm i128.so
